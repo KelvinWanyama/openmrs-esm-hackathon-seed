@@ -1,3 +1,8 @@
 .sample-class {
   background-color: orange;
 }
+.title {
+  color: #064213;
+  font-size: 28sp;
+  font-weight: bold;
+}

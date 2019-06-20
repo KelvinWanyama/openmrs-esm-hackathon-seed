@@ -11,7 +11,11 @@ export default function Root(props: RootProps) {
       ""
     );
 
-    fetch(`${baseURL}${props.patientUuid}&v=${queryParams}`)
+    const abortController = new AbortController();
+
+    fetch(`${baseURL}${props.patientUuid}&v=${queryParams}`, {
+      signal: abortController.signal
+    })
       .then(resp => {
         if (resp.ok) {
           return resp.json();
@@ -36,31 +40,42 @@ export default function Root(props: RootProps) {
           renderNull();
         }
       });
+
+    return () => abortController.abort();
   }, []);
 
   return renderEncounters();
 
-  function renderNull() {
-    return <div> No results found 404!</div>;
-  }
   function renderEncounters() {
     if (encounter) {
-      return (
-        <div>
-          <p className="title">
-            <u>VITALS</u>
-          </p>
-          <p>Last Vitals: {encounter.encounterDatetime}</p>
-          <div>
-            {encounter.obs.map(obs => (
-              <p>{obs.display}</p>
-            ))}
-          </div>
-        </div>
-      );
+      return displayVitals();
     } else {
-      return <div>Loading...</div>;
+      return loadingVitals();
     }
+  }
+
+  function displayVitals() {
+    return (
+      <div>
+        <p className="title">
+          <u>VITALS</u>
+        </p>
+        <p>Last Vitals: {encounter.encounterDatetime}</p>
+        <div>
+          {encounter.obs.map(obs => (
+            <p key={obs.uuid}>{obs.display}</p>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  function loadingVitals() {
+    return <div>Loading...</div>;
+  }
+
+  function renderNull() {
+    return <div> No results found 404!</div>;
   }
 }
 type RootProps = {

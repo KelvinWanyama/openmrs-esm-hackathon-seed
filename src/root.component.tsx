@@ -1,4 +1,5 @@
 import React from "react";
+import dateFormat from "dateformat";
 
 export default function Root(props: RootProps) {
   const [encounter, setEncounter] = React.useState(null);
@@ -56,15 +57,22 @@ export default function Root(props: RootProps) {
 
   function displayVitals() {
     return (
-      <div className="vitalsWidget">
-        <p className="title">
-          <u>VITALS</u>
-        </p>
-        <p>Last Vitals: {encounter.encounterDatetime}</p>
-        <div>
-          {encounter.obs.map(obs => (
-            <p key={obs.uuid}>{obs.display}</p>
-          ))}
+      <div className="card">
+        <div className="card-header">
+          <h5 className="card-title">Vitals</h5>
+        </div>
+        <div className="card-body">
+          <p className="font-weight-bold">
+            Last Vitals:{" "}
+            {dateFormat(encounter.encounterDatetime, "dd mmmm yyyy hh:mm TT")}
+          </p>
+          <div>
+            {encounter.obs.map(obs => (
+              <p className="list-group-item" key={obs.uuid}>
+                {obs.display}
+              </p>
+            ))}
+          </div>
         </div>
       </div>
     );

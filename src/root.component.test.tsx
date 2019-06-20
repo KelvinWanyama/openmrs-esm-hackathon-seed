@@ -78,7 +78,7 @@ describe(`<Root />`, () => {
       </FetchMock>
     );
 
-    return waitForElement(() => getByText("VITALS")).then(() => {
+    return waitForElement(() => getByText("Vitals")).then(() => {
       expect(() => getByText("Obs 1")).toThrow();
       expect(() => getByText("Obs 2")).toThrow();
       expect(getByText("Obs 3")).toBeTruthy();

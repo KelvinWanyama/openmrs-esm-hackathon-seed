@@ -56,7 +56,7 @@ export default function Root(props: RootProps) {
 
   function displayVitals() {
     return (
-      <div>
+      <div className="vitalsWidget">
         <p className="title">
           <u>VITALS</u>
         </p>
